@@ -1,0 +1,48 @@
+name: CI
+
+on: 
+    push:
+      branches:    
+        - master # Should be triggered only when we push to master branch
+
+jobs: # Here we are specifying the job we want to run, in this case, we are setting up a build job.
+    build: # The runs-on is specifying the OS you want your workflow to run on and we are using the latest version of ubuntu
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+              node-version: [10.x, 8.x]
+
+        # Steps just indicate the various steps you want to run on that job
+        steps:
+            - uses: actions/checkout@v1 # version 1 of the checkout action this is responsible for cloning the repo and checking into our project directory
+            
+            - name: Use Node.js ${{ matrix.node-version }}
+            uses: actions/setup-node@v1 # this is responsible for installing the specified version of node in our CI environment since we are using the matrix strategy
+            
+            with:
+              node-version: ${{ matrix.node-version }}
+
+            - name: npm install
+              run: |
+                npm install
+
+            - name: npm test
+              run: |
+                npm test 
+              env:
+                CI: true
+              
+            - name: npm build
+              run: |
+                npm run build --if-present
+
+#            - name: Add remote origin
+#              run: |
+#                git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+#
+#            - name: Deploy to Heroku
+#              run: |
+#                git push heroku HEAD:master -f    
+            
+        
