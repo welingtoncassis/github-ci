@@ -1,0 +1,18 @@
+name: CI
+# Use an array when using more than one event
+on: [push, pull_request] 
+# Here we are specifying the job we want to run, in this case, we are setting up a build job.
+jobs:
+    build:
+        # The runs-on is specifying the OS you want your workflow to run on and we are using the latest version of ubuntu
+        runs-on: ubuntu-latest
+        # Steps just indicate the various steps you want to run on that job
+        steps:
+            - uses: actions/checkout@v1 # version 1 of the checkout action this is responsible for cloning the repo and checking into our project directory
+            - name: Run a one-line script
+              run: echo Hello, world!
+            - name: Run a multi-line script
+              run: |
+                echo Add other actions to build,
+                echo test, and deploy your project.
+        
