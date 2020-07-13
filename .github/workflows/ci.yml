@@ -16,7 +16,13 @@ jobs: # Here we are specifying the job we want to run, in this case, we are sett
     # Steps just indicate the various steps you want to run on that job
     steps:
     - uses: actions/checkout@v1 # version 1 of the checkout action this is responsible for cloning the repo and checking into our project directory
-            
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8' # The JDK version to make available on the path.
+        java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+        architecture: x64 # (x64 or x86) - defaults to x64
+    - run: java -cp java HelloWorldApp
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1 # this is responsible for installing the specified version of node in our CI environment since we are using the matrix strategy
       with:
